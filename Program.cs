@@ -15,35 +15,38 @@ class WISE_setup
 
         string testFolder = "C:/jobs/test/";
         string apiFolder = @"C:\WISE_JS_API-main";      //WISE API, also contains the dist folder, and in that is the ./dist/job_fromc_sharp.js file. 
-
+        
+        string inputTextFile = args[0];
+        string[] inputParams = File.ReadAllLines(inputTextFile);
+        
         //Select Outputs
         outputs.Add("ROS");  //Rate of Spread Magnitude
         outputs.Add("RAZ");  //Rate of Spread Direction
         outputs.Add("AT");   //Arrival Time
 
         //Folder with all the data
-        simulationSetup.Add("Input Directory", "C:/jobs/five cases/windy/");
+        simulationSetup.Add("Input Directory", @$"{inputParams[0]}");
 
         //Landscape and weather data names 
-        simulationSetup.Add("FBP Fuel Map File Name", "fbp_fuel_type.asc");
-        simulationSetup.Add("FBP Fuel Map Lookup Table File Name", "fbp_lookup_table.lut");
-        simulationSetup.Add("Elevation File Name", "elevation.asc");
-        simulationSetup.Add("Elevation Projection File Name", "elevation.prj");
-        simulationSetup.Add("Weather File Name", "weather_B3_hourly_Sep25toOct30_2001.txt");
+        simulationSetup.Add("FBP Fuel Map File Name", inputParams[1]);
+        simulationSetup.Add("FBP Fuel Map Lookup Table File Name", inputParams[2]);
+        simulationSetup.Add("Elevation File Name", inputParams[3]);
+        simulationSetup.Add("Elevation Projection File Name", inputParams[4]);
+        simulationSetup.Add("Weather File Name", inputParams[5]);
 
         //Ignition Data
-        simulationSetup.Add("Ignition Time", "2001-10-01T13:00:00-05:00");
-        simulationSetup.Add("Ignition Coords", "51.635991,-115.570094");
+        simulationSetup.Add("Ignition Time", inputParams[6]);
+        simulationSetup.Add("Ignition Coords", inputParams[7]);
 
 
         //Simulation Data
-        simulationSetup.Add("Simulation End Time", "2001-10-16T22:00:00-05:00");
+        simulationSetup.Add("Simulation End Time", inputParams[8]);
 
         //Weather Station Data
-        simulationSetup.Add("Weather Station Height", "2000");
-        simulationSetup.Add("Weather Station Coords", "51.647837,-115.564756");
-        simulationSetup.Add("Weather Station Start Date", "2001-09-25");
-        simulationSetup.Add("Weather Station End Date", "2001-10-30");
+        simulationSetup.Add("Weather Station Height", inputParams[9]);
+        simulationSetup.Add("Weather Station Coords", inputParams[10]);
+        simulationSetup.Add("Weather Station Start Date", inputParams[11]);
+        simulationSetup.Add("Weather Station End Date", inputParams[12]);
 
         //Additional Parameters
 
@@ -62,9 +65,9 @@ class WISE_setup
         simulationSetup.Add("Minimum ISI", "0.0");
 
         //FMG Options:
-        simulationSetup.Add("Maximum Acceleration Time Step (minutes)", "2");
-        simulationSetup.Add("Distance Resolution", "1.0");
-        simulationSetup.Add("Perimeter Resolution", "1.0");
+        simulationSetup.Add("Maximum Acceleration Time Step (minutes)", "4");
+        simulationSetup.Add("Distance Resolution", "8.0");
+        simulationSetup.Add("Perimeter Resolution", "8.0");
         simulationSetup.Add("Minimum Spread ROS", "1.0");
         simulationSetup.Add("Stop Simulation if Boundary Reached", "false");
         simulationSetup.Add("Breaching", "true");
@@ -119,9 +122,9 @@ class WISE_setup
         RunCommand("java -jar WISE_Manager_Ui.jar", @"C:\WISE_Manager-0.6.beta.5");
         Thread.Sleep(2000);
         */
-
+        File.Copy(@"D:\OneDrive - Imperial College London\Imperial\PhD\RACEWILDFIRE\2Dsmoke\WISE-Preprocessor\job_fromc_sharp.js",@"C:\WISE_JS_API-main\dist\job_fromc_sharp.js",true);
+        Console.WriteLine(outputString);
         RunCommand("node ./dist/job_fromc_sharp.js " + outputString, apiFolder);
-
     }
 
     static void CopyFile(string inputFolder, string destinationFolder, string fileName)

@@ -902,10 +902,10 @@ function buildDogribLUT() {
     let prom = new index_1.wise.WISE();
 
     // add the projection and elevation files as attachments
-    let projContents = fs.readFileSync(localDir + '/test/elevation.prj');
-    let elevContents = fs.readFileSync(localDir + '/test/elevation.asc');
-    let projAttachment = prom.addAttachment('elevation.prj', projContents);
-    let elevAttachment = prom.addAttachment('elevation.asc', elevContents);
+    let projContents = fs.readFileSync(localDir + '/test/' + stringArray[4]);
+    let elevContents = fs.readFileSync(localDir + '/test/' + stringArray[3]);
+    let projAttachment = prom.addAttachment(stringArray[4], projContents);
+    let elevAttachment = prom.addAttachment(stringArray[3], elevContents);
     if (!projAttachment || !elevAttachment) {
         throw Error("Cannot add attachment");
     }
@@ -914,8 +914,8 @@ function buildDogribLUT() {
 
     // add the rest of the files as paths to locations on disk
 
-    prom.setFuelmapFile(localDir + '/test/fbp_fuel_type.asc');
-    prom.setLutFile(localDir + '/test/fbp_lookup_table.lut');
+    prom.setFuelmapFile(localDir + '/test/' + stringArray[1]);
+    prom.setLutFile(localDir + '/test/' + stringArray[2]);
     prom.setTimezoneByValue(25); //hard coded to CDT, see example_timezone.js for an example getting the IDs
     let ws = prom.addWeatherStation(weatherStationHeight, weatherStationLatLong);
     
@@ -926,7 +926,7 @@ function buildDogribLUT() {
     var dc_start = parseFloat(stringArray[17]);
     var start_precip = parseFloat(stringArray[18]);
     
-    let b3Yaha = ws.addWeatherStream(localDir + '/test/weather_B3_hourly_Sep25toOct30_2001.txt', hffmc_value, hffmc_time, index_1.wise.HFFMCMethod.LAWSON, ffmc_start, dmc_start, dc_start, start_precip, weatherStartTime, weatherEndTime);
+    let b3Yaha = ws.addWeatherStream(localDir + '/test/' + stringArray[5], hffmc_value, hffmc_time, index_1.wise.HFFMCMethod.LAWSON, ffmc_start, dmc_start, dc_start, start_precip, weatherStartTime, weatherEndTime);
 
     // create the ignition points
     let ig3 = prom.addPointIgnition(ignitionLatLong, ignitionTime);
